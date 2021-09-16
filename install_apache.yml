@@ -3,13 +3,11 @@
 - hosts: all
   become: true
   tasks:
-  
-  - name: update repo index
-    yum:
-      update_cache: yes
 
-  - name: install httpd package
-    yum:
-      name: httpd
+  - name: install httpd package with php and update_cache
+    package:
+      name: 
+        - httpd
+        - php
       state: latest
-    when: ansible_distribution == "RedHat"
+      update_cache: yes
