@@ -1,0 +1,25 @@
+---
+
+- hosts: http_server
+  become: true
+  
+  vars:
+    logrotate_scripts:        
+      - name: syslog
+        paths:
+          - "/var/log/cron"
+          - "/var/log/maillog"
+          - "/var/log/messages"
+          - "/var/log/secure"
+          - "/var/log/spooler"
+        options:
+          - missingok
+          - sharedscripts
+          - rotate 5
+          - weekly
+          - compress
+        scripts:
+          postrotate: "/usr/bin/systemctl kill -s HUP rsyslog.service >/dev/null 2>&1 || true"
+           
+  roles:
+    - ansible-logrotate
